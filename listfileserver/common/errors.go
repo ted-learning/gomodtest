@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"go.uber.org/zap"
 	"net/http"
 	"os"
@@ -14,14 +15,14 @@ var zapLog, _ = zap.NewProduction()
 
 type BadRequest interface {
 	error
+	IsBadRequest() bool
 }
 
 func ErrorWrap(app App) Controller {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		defer func() {
-			r := recover()
-			if err, ok := r.(error); ok {
-				zapLog.Error(err.Error())
+			if r := recover(); r != nil {
+				zapLog.Error(fmt.Sprintf("Panic: %v", r))
 				http.Error(writer, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			}
 		}()
@@ -32,8 +33,8 @@ func ErrorWrap(app App) Controller {
 		}
 		zapLog.Error(err.Error())
 
-		if badRequest, isBadRequest := err.(BadRequest); isBadRequest {
-			http.Error(writer, badRequest.Error(), http.StatusBadRequest)
+		if customError, ok := err.(BadRequest); ok {
+			http.Error(writer, customError.Error(), http.StatusBadRequest)
 			return
 		}
 
