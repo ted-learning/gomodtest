@@ -1,4 +1,4 @@
-package main
+package fib
 
 import (
 	"bufio"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func fibonacci() func() int {
+func Fibonacci() func() int {
 	a, b := 0, 1
 	return func() int {
 		a, b = b, a+b
@@ -15,7 +15,7 @@ func fibonacci() func() int {
 	}
 }
 
-func fibonacci2() fin {
+func Fibonacci2() Fin {
 	a, b := 0, 1
 	return func() int {
 		a, b = b, a+b
@@ -23,9 +23,9 @@ func fibonacci2() fin {
 	}
 }
 
-type fin func() int
+type Fin func() int
 
-func (f fin) Read(p []byte) (n int, err error) {
+func (f Fin) Read(p []byte) (n int, err error) {
 	next := f()
 	if next > 100000 {
 		return 0, io.EOF
@@ -41,7 +41,7 @@ func printContents(reader io.Reader) {
 }
 
 func main() {
-	f := fibonacci()
+	f := Fibonacci()
 
 	fmt.Println(f()) //1
 	fmt.Println(f()) //1
@@ -53,5 +53,5 @@ func main() {
 	fmt.Println(f()) //21
 	fmt.Println(f()) //34
 
-	printContents(fibonacci2())
+	printContents(Fibonacci2())
 }
