@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"math"
 	"testing"
 )
@@ -38,4 +39,12 @@ func TestTriangle(t *testing.T) {
 			t.Errorf("calculate triangle %d and %d, the actual result %d is not as expect: %d", given.p1, given.p2, result, given.result)
 		}
 	}
+}
+
+func Example_add() {
+	sum := add(1, 2)
+	fmt.Println(sum)
+
+	//output:
+	//3
 }
