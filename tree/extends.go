@@ -27,3 +27,14 @@ func (node *Node) TraverseFunc(f func(node *Node)) {
 	f(node)
 	node.Right.TraverseFunc(f)
 }
+
+func (node *Node) TraverseWithChannel() <-chan *Node {
+	var c = make(chan *Node)
+	go func() {
+		node.TraverseFunc(func(node *Node) {
+			c <- node
+		})
+		close(c)
+	}()
+	return c
+}

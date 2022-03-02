@@ -26,4 +26,10 @@ func main() {
 		count++
 	})
 	fmt.Println(count)
+
+	fmt.Println("----------------")
+	c := root.TraverseWithChannel()
+	for n := range c {
+		n.Print()
+	}
 }
