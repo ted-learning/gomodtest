@@ -4,6 +4,7 @@ import (
 	"gomodtest/listfileserver/apps"
 	"gomodtest/listfileserver/common"
 	"net/http"
+	_ "net/http/pprof"
 )
 
 func httpHandleFunc(url string, app common.App) {
